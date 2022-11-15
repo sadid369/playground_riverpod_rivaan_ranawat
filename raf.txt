@@ -2,18 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:playground/main.dart';
 
-class MyHomePage extends ConsumerStatefulWidget {
+class MyHomePage extends ConsumerWidget {
   const MyHomePage({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends ConsumerState<MyHomePage> {
-  String userNo = '1';
-  @override
-  Widget build(BuildContext context) {
-    return ref.watch(fetchUserProvider(userNo)).when(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(fetchUserProvider).when(
         data: (data) {
           return Scaffold(
               appBar: AppBar(
@@ -21,11 +15,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               ),
               body: Column(
                 children: [
-                  TextField(
-                    onChanged: (value) => setState(() {
-                      userNo = value;
-                    }),
-                  ),
                   Center(
                     child: Text(data.email),
                   )
@@ -41,5 +30,18 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         loading: () => const Center(
               child: CircularProgressIndicator(),
             ));
+    // return Scaffold(
+    //     body: ref.watch(streamProvider).when(
+    //         data: (data) {
+    //           return Center(child: Text(data.toString()));
+    //         },
+    //         error: (error, stackTrace) {
+    //           return Center(
+    //             child: Text(error.toString()),
+    //           );
+    //         },
+    //         loading: () => const Center(
+    //               child: CircularProgressIndicator(),
+    //             )));
   }
 }
